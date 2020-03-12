@@ -15,4 +15,4 @@ $includeFileDest = Resolve-Path $IncludeDir
 
 # Copy Include directory from Source Code Folder to Output Folder
 Copy-Item -Force $SourceIncludeDir/* -Destination $IncludeDir -Recurse
-Write-Output "Successfully copied Protobuf Include Files to $includeFileDest !"
+Write-Output "Successfully copied KFR Lib Include Files to $includeFileDest !"

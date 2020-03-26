@@ -1,11 +1,18 @@
 @ECHO OFF
 
+SET BuildType=%1
+IF "%BuildType%"=="" (
+    SET BuildType=Debug
+    ECHO Build Type not specified.  Using Debug configuration.
+)
+
+SET LlvmRoot=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/Llvm
+
 SET BuildDir=build
 SET OutputDir=out
-SET RootSourcePath=./src
 
-SET HostBuildDir=%BuildDir%\host
-SET HostOutputDir=%OutputDir%\host
+SET HostBuildDir=%BuildDir%\host\%BuildType%
+SET HostOutputDir=%OutputDir%\host\%BuildType%
 
 SET KfrDftLibName=kfr_dft.lib
 SET KfrIoLibName=kfr_io.lib
@@ -28,11 +35,11 @@ ECHO Building KFR Lib for Host Architecture...
 PUSHD %HostBuildDir%
 cmake ^
     -DENABLE_TESTS=OFF ^
-    -DCMAKE_CXX_COMPILER="C:/Program Files/LLVM/bin/clang-cl.exe" ^
+    -DCMAKE_CXX_COMPILER="%LlvmRoot%/bin/clang-cl.exe" ^
     -DCMAKE_CXX_FLAGS=-m64 ^
-    -DCMAKE_BUILD_TYPE=Release ^
+    -DCMAKE_BUILD_TYPE=%BuildType% ^
     -G "Ninja" ^
-    ..\..\src\
+    ..\..\..\src\
 
 ninja
 POPD

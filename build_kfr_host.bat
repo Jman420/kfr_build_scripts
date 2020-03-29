@@ -38,15 +38,10 @@ cmake ^
     -DCMAKE_CXX_COMPILER="%LlvmRoot%/bin/clang-cl.exe" ^
     -DCMAKE_CXX_FLAGS=-m64 ^
     -DCMAKE_BUILD_TYPE=%BuildType% ^
+    -DCMAKE_INSTALL_PREFIX=..\..\..\%HostOutputDir% ^
     -G "Ninja" ^
     ..\..\..\src\
 
-ninja
+cmake --build . --target install
 POPD
 ECHO Successfully built KFR Lib for Host Architecture!
-
-ECHO Copying Host Libraries to Output Directories...
-copy "%HostBuildDir%\%KfrDftLibName%" "%HostOutputDir%\%KfrDftLibName%"
-copy "%HostBuildDir%\%KfrIoLibName%" "%HostOutputDir%\%KfrIoLibName%"
-ECHO Succesfully Copied Host Libraries to Output Directories!
-ECHO Execute copy_include_headers.ps1 in Powershell to copy the KFR Lib Include Headers.

@@ -49,22 +49,12 @@ for ($archCounter = 0; $archCounter -lt $ArchTargets.Length; $archCounter++) {
         -DCMAKE_CXX_FLAGS=-std=c++14 `
         -DANDROID_STL=c++_shared `
         -DANDROID_ABI="$archTarget" `
+        -DCMAKE_INSTALL_PREFIX="$fullOutputPath" `
         -G "Ninja" `
         "../../../$RootSourcePath"
     
-    . $env:LOCALAPPDATA\$AndroidCmakeExe --build .
+    . $env:LOCALAPPDATA\$AndroidCmakeExe --build . --target install
     Write-Output "Successfully built KFR Lib for Android - $archTarget !"
-    
-    Write-Output "Copying $archTarget binaries to Output Directory..."
-    $libraryFiles = (Get-ChildItem -Path $LibraryFilePattern -Recurse).FullName | Resolve-Path -Relative
-    foreach ($libFile in $libraryFiles) {
-        $libFileDest = "$fullOutputPath/" + $libFile.Replace(".\", "").Replace("\", "/")
-        Write-Output "Copying $libFile to $libFileDest ..."
-        New-Item -Force $libFileDest
-        Copy-Item -Force $libFile -Destination $libFileDest
-    }
     Pop-Location
 }
 Write-Output "Successfully built KFR Lib for Android!"
-
-& "$PSScriptRoot\copy_include_headers.ps1"

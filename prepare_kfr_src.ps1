@@ -10,7 +10,7 @@ if (Test-Path $RepoZipFile) {
     Remove-Item $RepoZipFile -Force
 }
 Write-Output "Downloading KFR Lib Repo Zip File..."
-Start-BitsTransfer -Source $RepoUrl -Destination $RepoZipFile
+Invoke-WebRequest -Uri $RepoUrl -OutFile $RepoZipFile
 
 if (Test-Path $RootSourcePath) {
     Write-Output "Removing KFR Lib Source Code Directory..."
